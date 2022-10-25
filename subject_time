@@ -1,0 +1,104 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+
+/*数字以外が入力された場合、強制終了させます*/
+void no_char(int a){
+	if(a==0){
+		printf("***************FATAL ERROR***************\n");
+		exit(0);
+	}
+}
+
+/*エラー表示*/
+int error(int a){
+	while(a<0||a>=24){
+		printf("\n");
+		printf("*****************ERROR!*****************\n");
+		printf("入力が誤っています\n");
+		printf("0～23の間で入力してください\n");
+		printf("時刻=");
+		no_char(scanf("%d",&a));
+	}
+	return a;
+}
+
+/*時刻判定*/
+void judge(int time,int a/*start_time*/,int b/*end_time*/){
+	int i;
+	if(a==b){/*==開始、終了時刻が同じだった場合==*/
+		if(time==a){
+			printf("指定した範囲内に時刻が含まれています!\n");
+		}else{
+			printf("指定した範囲内に時刻は含まれていません。\n");
+		}
+	}else{/*==開始、終了時刻が同じではなかった場合==*/
+		if(b>a){
+			for(i=a;i<=b;i++){
+				if(i==time && i<b){
+					printf("指定した範囲内に時刻が含まれています!\n");
+					break;
+				}
+				if(i==b){
+					printf("指定した範囲内に時刻は含まれていません。\n");
+					break;
+				}
+			}
+		}else{
+			if(time>=0 && time<b){
+				time=time+24;
+			}
+			b=b+24;
+			for(i=a;i<=b;i++){
+				if(i==time && i<b){
+					printf("指定した範囲内に時刻が含まれています!\n");
+					break;
+				}
+				if(i==b){
+					printf("指定した範囲内に時刻は含まれていません。\n");
+					break;
+				}
+			}
+		}
+	}
+}
+
+
+int main(){
+	int i,t,s,f,d;
+	
+	d=1;
+	t=1;
+	/*時刻の入力*/
+	printf("時刻を指定してください(0～23時)\n");
+	printf("時刻=");
+	no_char(scanf("%d",&t));
+	
+	t=error(t);
+	
+	/*範囲の指定*/
+	while(d!=0){
+		printf("****************************************\n");
+		printf("時間の範囲の指定\n");
+		printf("<１>.始まりの時間を指定してください(0～23)\n");
+		printf("開始時刻=");
+		no_char(scanf("%d",&s));
+		s=error(s);
+		
+		printf("\n");
+		printf("<２>.終わりの時間を指定してください(0～23)\n");
+		printf("終了時刻=");
+		no_char(scanf("%d",&f));
+		f=error(f);
+		
+		printf("\n\n");
+		printf("指定時刻は%d:00～%d:00です\n",s,f);
+		printf("正しい場合は'0'を、訂正したい場合はそれ以外の整数を入力してください\n");
+		no_char(scanf("%d",&d));
+	}
+	
+	/*判定結果表示*/
+	printf("\n");
+	printf("*****************判定結果***************\n");
+	judge(t,s,f);
+}
